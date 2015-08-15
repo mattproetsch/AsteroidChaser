@@ -55,7 +55,7 @@ public class AsteroidMovement : MonoBehaviour {
 		float dt = Time.deltaTime;
 
 		Vector2 newPos = _StartPosition + (XRadius * Mathf.Cos (t / _speedFactor) * _u) + (YRadius * Mathf.Sin (t / _speedFactor) * _v);
-		_velocity = newPos - new Vector2(transform.position.x, transform.position.y);
+		_velocity = (newPos - new Vector2 (transform.position.x, transform.position.y)) / Time.deltaTime;
 		transform.position = newPos;
 
 

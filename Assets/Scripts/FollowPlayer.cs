@@ -3,7 +3,7 @@ using System.Collections;
 
 public class FollowPlayer : MonoBehaviour {
 	
-	public float dampTime = 0.1f;
+	public float dampTime = 0.0f;
 	private Vector3 velocity = Vector3.zero;
 	public GameObject target;
 	private Transform targetTransform;
@@ -26,9 +26,9 @@ public class FollowPlayer : MonoBehaviour {
 			Vector3 delta = targetTransform.position - camera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, point.z));
 			Vector3 destination = transform.position + delta;
 			// smooth:
-			//transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
+			transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
 			// directly follow:
-			transform.position = destination;
+			//transform.position = destination;
 		}
 	}
 }
