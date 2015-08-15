@@ -3,20 +3,39 @@ using System.Collections;
 
 public class Land : MonoBehaviour {
 
-	private GameObject _Earth;
-
-	private bool _canLand;
-	private bool _landing;
-	private GameObject _landingObj;
-
-	private Vector3 _vel;
-
+	public enum LandingStage {
+		CantLand,
+		CanLand,
+		Landing,
+		Landed
+	}
+	
 	public float LandingSpeed;
 	public float Tolerance;
 
+	private GameObject _Earth;
+	private LandingStage _landingStage;
+	private GameObject _landingObj;
+
+
+	private float _landedWhenThisClose = 0.07f;
+	private Vector3 _vel;
+
 	public bool Landing {
 		get {
-			return _landing;
+			return _landingStage == LandingStage.Landing;
+		}
+	}
+
+	public bool Landed {
+		get {
+			return _landingStage == LandingStage.Landed;
+		}
+	}
+
+	public bool CanLand {
+		get {
+			return _landingStage == LandingStage.CanLand;
 		}
 	}
 
@@ -24,27 +43,38 @@ public class Land : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		_Earth = GameObject.Find ("Earth");
-		_landing = false;
-		_canLand = false;
 		_vel = new Vector3 (0, 0, 0);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (_landing) {
+		if (Landing) {
 			transform.position = Vector3.SmoothDamp (transform.position, _landingObj.transform.position, ref _vel, LandingSpeed);
+			if (Vector3.Distance(transform.position, _landingObj.transform.position) <= _landedWhenThisClose)
+			{
+				FinalizeLanding();
+			}
 		}
 
-		if (_canLand && Input.GetButton ("Jump")) {
-			_landing = true;
-			_canLand = false;
+		if (CanLand && Input.GetButton ("Jump")) {
+			InitiateLandingSequence ();
+		}
+
+		if (Landed && Input.GetButton ("Jump")) {
+			BlastOff ();
+		}
+
+		if (Landed) {
+			transform.position = _landingObj.transform.position;
 		}
 	}
 
 	void OnGUI()
 	{
-		if (_canLand) {
-			GUI.Box (new Rect (new Vector2 (Screen.width / 2 - 100, Screen.height / 2 - 100), new Vector2 (200, 200)), "PRESS A TO LAND");
+		if (CanLand) {
+			GUI.Box (new Rect (new Vector2 (Screen.width / 2 - 100, Screen.height / 2 - 100), new Vector2 (200, 200)), "PRESS Y TO LAND ON " + _landingObj.name);
+		} else if (Landed) {
+			GUI.Box (new Rect (new Vector2 (Screen.width / 2 - 100, Screen.height / 2 - 100), new Vector2 (200, 200)), "PRESS Y TO BLAST OFF");
 		}
 	}
 		
@@ -55,14 +85,46 @@ public class Land : MonoBehaviour {
 		} else if (other.gameObject.name.Contains ("AsteroidLandingZone")) {
 			Debug.Log ("Entered asteroid landing zone");
 			// Test velocity to see if we can land
-			if (CanLandOn(other.gameObject.transform.parent.gameObject)) {
+			if (CanLandOnAsteroid(other.gameObject.transform.parent.gameObject)) {
 				PrepareToLandOn(other.gameObject.transform.parent.gameObject);
 			}
 		}
 	}
 
-	bool CanLandOn(GameObject other) {
+	void OnTriggerExit2D(Collider2D other)
+	{
+		if (other.gameObject == _Earth) {
+			CancelLandingPreparations (_Earth);
+		} else if (other.gameObject.name.Contains ("AsteroidLandingZone")) {
+			CancelLandingPreparations (other.gameObject.transform.parent.gameObject);
+		}
+	}
+
+	void PrepareToLandOn(GameObject target) {
+		_landingStage = LandingStage.CanLand;
+		_landingObj = target;
+	}
+
+	void CancelLandingPreparations (GameObject _Earth)
+	{
+		_landingStage = LandingStage.CantLand;
+		_landingObj = null;
+	}
+
+	void InitiateLandingSequence ()
+	{
+		_landingStage = LandingStage.Landing;
+	}
+
+	void FinalizeLanding ()
+	{
+		_landingStage = LandingStage.Landed;
+	}
+
+	bool CanLandOnAsteroid(GameObject other) {
 		// Compare velocities
+		Move myMovement = gameObject.GetComponent<Move> ();
+		Vector2 myVel = myMovement.Velocity;
 		AsteroidMovement otherMovement = other.GetComponent<AsteroidMovement>();
 		Vector2 otherVel = otherMovement.Velocity;
 		
@@ -70,9 +132,18 @@ public class Land : MonoBehaviour {
 		return dist < Tolerance;
 	}
 
-	void PrepareToLandOn(GameObject target) {
-		_canLand = true;
-		_landing = false;
-		_landingObj = target;
+	void BlastOff() {
+		_landingStage = LandingStage.CantLand;
+
+		float radius = 0.0f;
+		if (_landingObj == _Earth)
+			radius = 5.0f;
+		else if (_landingObj.name.Contains("Asteroid")) {
+			radius = 3.0f;
+		}
+
+
+		Vector3 delta = radius * Random.onUnitSphere;
+		transform.position = transform.position + delta;
 	}
 }
