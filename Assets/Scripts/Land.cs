@@ -72,7 +72,14 @@ public class Land : MonoBehaviour {
 	void OnGUI()
 	{
 		if (CanLand) {
-			GUI.Box (new Rect (new Vector2 (Screen.width / 2 - 100, Screen.height / 2 - 100), new Vector2 (200, 200)), "PRESS Y TO LAND ON " + _landingObj.name);
+			string msg;
+			if (IsAsteroid(_landingObj)) {
+				msg = "PRESS Y TO LAND ON " + _landingObj.name + "\n(" + _landingObj.GetComponent<AsteroidValue>().Value + " RESOURCES)";
+			}
+			else {
+				msg = "PRESS Y TO LAND ON " + _landingObj.name;
+			}
+			GUI.Box (new Rect (new Vector2 (Screen.width / 2 - 100, Screen.height / 2 - 100), new Vector2 (200, 200)), msg);
 		} else if (Landed) {
 			GUI.Box (new Rect (new Vector2 (Screen.width / 2 - 100, Screen.height / 2 - 100), new Vector2 (200, 200)), "PRESS Y TO BLAST OFF");
 		}
@@ -116,9 +123,16 @@ public class Land : MonoBehaviour {
 		_landingStage = LandingStage.Landing;
 	}
 
+	/// <summary>
+	/// Finalizes the landing. Extracts resources, adds to inventory.
+	/// </summary>
 	void FinalizeLanding ()
 	{
 		_landingStage = LandingStage.Landed;
+		if (IsAsteroid (_landingObj)) {
+			// Extract resources from this asteroid and add them to inventory
+			this.GetComponent<Inventory> ().MineralXAmt += _landingObj.GetComponent<AsteroidValue> ().Extract();
+		}
 	}
 
 	bool CanLandOnAsteroid(GameObject other) {
@@ -138,7 +152,7 @@ public class Land : MonoBehaviour {
 		float radius = 0.0f;
 		if (_landingObj == _Earth)
 			radius = 5.0f;
-		else if (_landingObj.name.Contains("Asteroid")) {
+		else if (IsAsteroid(_landingObj)) {
 			radius = 3.0f;
 		}
 
@@ -146,4 +160,10 @@ public class Land : MonoBehaviour {
 		Vector3 delta = radius * Random.onUnitSphere;
 		transform.position = transform.position + delta;
 	}
+
+	bool IsAsteroid (GameObject _landingObj)
+	{
+		return _landingObj.name.Contains ("Asteroid");
+	}
+
 }
