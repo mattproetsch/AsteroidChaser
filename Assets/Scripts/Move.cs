@@ -16,11 +16,13 @@ public class Move : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		
+		if (!gameObject.GetComponent<Land> ().Landing) {
+			xVel += Input.GetAxis ("Horizontal") * Speed;
+			yVel += Input.GetAxis ("Vertical") * Speed;
 
-		xVel += Input.GetAxis ("Horizontal") * Speed;
-		yVel += Input.GetAxis ("Vertical") * Speed;
-
-		transform.position += Time.deltaTime * new Vector3 (xVel, yVel, 0.0f);
+			transform.position += Time.deltaTime * new Vector3 (xVel, yVel, 0.15f);
+		}
 		
 	}
 }
