@@ -1,0 +1,71 @@
+░█▀█░█▀▀░▀█▀░█▀▀░█▀█░█▀█░█░█▀▄░░░█▀▀░█░█░█▀█░█▀▀░█▀▀
+░█▀█░▀▀█░░█░░█▀▀░█▀▄░█░█░█░█░█░░░█░░░█▀█░█▀█░▀▀█░█▀▀
+░▀░▀░▀▀▀░░▀░░▀▀▀░▀░▀░▀▀▀░▀░▀▀░░░░▀▀▀░▀░▀░▀░▀░▀▀▀░▀▀▀
+
+
+
+
+Milestone 1
+
+> Leave Earth
+> Navigable Overworld
+> Return to earth
+
+
+Milestone 2
+
+> Asteroids in overworld that can be landed on similar to earth return that switches to:
+> Mining mechanic for obtaining valuable resources
+> Endgame goal (get 1000 tonnes of the mineral or something[and liquefy it so it cant be weaponized?])
+
+Milestone 3
+
+> Upgrade system that reflects changes visually
+> Report other nation's quantities of substance x to player as time passes
+> Intro scene with story text
+> Ending 'congrats' scene
+
+
+
+
+
+Possible gameplay elements:
+	
+	> Amount of fuel returned increases govt funding; more mined == more money for mine-suit upgrades
+	> Since player deploys numerous times; needs 'mission accomplished'/'mission failed' conditions
+
+
+
+Summary:
+	Fix global crises by collecting asteroid resources
+	
+
+
+Backstory and overall goal:
+
+
+
+In the not-so-distant future, Earth is suffering from an international energy crisis that calls for a newly discovered, energy rich mineral to replace fossil fuels as a source of combustible power.
+
+Years into the energy crisis, Earth has been bombarded by a meteor storm with origins deep within the solar system. Analysis of recovered meteorite samples showed them to be highly energetic, even injuring a number of amateur meteorite hunters.
+
+The new mineral dubbed Substance X (needs a way better name [vesperium?]) is dangerously volatile in its raw form. Through liquefaction however, it can be converted into a clean and highly efficient liquid rocket fuel capable of accelerating launch vehicles to beyond escape velocity, allowing for new breeds of space exploration. 
+
+Rather than unifying them, however, the discovery of this new technology sparked strife between the world's great space powers, leading North America, Russia, and the People's Republic of China into a new era of space rivalry.
+
+Substance X's use as a weapon is an ever-present and unspoken threat amongst national leaders, the intentions of which cannot be discerned. 
+
+
+This volatile new substance is both the key to subverting the energy crisis and uniting humanity as well as a dark token into the realm of destruction, toward breakthroughs on a scale unseen since the days of the Manhattan Project.
+
+Be the first to secure substance X and subsequently; the well being of billions.
+
+
+
+
+
+
+Idle thoughts:
+
+Perhaps the player can decide how much of the substance to render into fuel and how much to weaponize? 
+3 major gameplay elements: flying to asteroid, mining the asteroids, menus in-between
