@@ -56,11 +56,11 @@ public class Land : MonoBehaviour {
 			}
 		}
 
-		if (CanLand && Input.GetButton ("Jump")) {
+		if (CanLand && Input.GetButtonDown ("Jump")) {
 			InitiateLandingSequence ();
 		}
 
-		if (Landed && Input.GetButton ("Jump")) {
+		if (Landed && Input.GetButtonDown ("Jump")) {
 			BlastOff ();
 		}
 
