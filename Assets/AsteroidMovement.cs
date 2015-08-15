@@ -3,11 +3,12 @@ using System.Collections;
 
 public class AsteroidMovement : MonoBehaviour {
 
-	public Vector3 StartPosition;
+	//public Vector3 StartPosition;
 	public float AxisRotationDegrees;
 	public float XRadius;
 	public float YRadius;
 	public float Speed;
+	public bool IsRandom;
 
 	private float _axRotRad;
 	private float _sinRot;
@@ -18,8 +19,23 @@ public class AsteroidMovement : MonoBehaviour {
 	private Vector2 _StartPosition;
 	private float _speedFactor;
 
+	private Vector2 _velocity;
+	public Vector2 Velocity {
+		get {
+			return _velocity;
+		}
+	}
+
 	// Use this for initialization
 	void Start () {
+		
+		if (IsRandom) {
+			AxisRotationDegrees = Random.Range (0.0f, 180.0f);
+			XRadius = Random.Range(1.0f, 4.0f);
+			YRadius = Random.Range(1.0f, 4.0f);
+			Speed = Random.Range(0.5f, 2.5f);
+		}
+
 		_axRotRad = Mathf.Deg2Rad * AxisRotationDegrees;
 		_sinRot = Mathf.Sin (_axRotRad);
 		_cosRot = Mathf.Cos (_axRotRad);
@@ -27,11 +43,10 @@ public class AsteroidMovement : MonoBehaviour {
 		_u = new Vector2 (_cosRot, _sinRot);
 		_v = new Vector2 (-_sinRot, _cosRot);
 
-		_StartPosition = new Vector2 (StartPosition.x, StartPosition.y);
+		_StartPosition = new Vector2 (transform.position.x, transform.position.y);
 		if (Speed > 0) {
 			_speedFactor = 1 / Speed;
 		}
-
 	}
 	
 	// Update is called once per frame
@@ -40,6 +55,7 @@ public class AsteroidMovement : MonoBehaviour {
 		float dt = Time.deltaTime;
 
 		Vector2 newPos = _StartPosition + (XRadius * Mathf.Cos (t / _speedFactor) * _u) + (YRadius * Mathf.Sin (t / _speedFactor) * _v);
+		_velocity = newPos - new Vector2(transform.position.x, transform.position.y);
 		transform.position = newPos;
 
 
