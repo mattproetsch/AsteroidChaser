@@ -208,6 +208,7 @@ public class Land : MonoBehaviour {
 	{
 		_landingStage = LandingStage.CantLand;
 		_landingObj = null;
+		HideText ();
 	}
 
 	void InitiateLandingSequence ()
@@ -231,7 +232,7 @@ public class Land : MonoBehaviour {
 			ShowText ("Y to blast off");
 		} else {
 			Inventory i = this.GetComponent<Inventory>();
-			i.returnedAmt = i.MineralXAmt;
+			i.returnedAmt += i.MineralXAmt;
 			i.MineralXAmt = 0;
 			ShowText ("A to upgrade; Y to blast off");
 		}
