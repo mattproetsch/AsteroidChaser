@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Land : MonoBehaviour {
 
@@ -33,6 +34,10 @@ public class Land : MonoBehaviour {
 	private float _landingStartTime;
 	public float MaxLandingTime;
 
+	//private GameObject _earthLandingTextObj;
+	private GameObject _astLandingTextObj;
+	private GameObject _landingTextBg;
+
 	public bool Landing {
 		get {
 			return _landingStage == LandingStage.Landing;
@@ -57,6 +62,14 @@ public class Land : MonoBehaviour {
 		_Earth = GameObject.Find ("Earth");
 		_vel = new Vector3 (0, 0, 0);
 		_sr = this.gameObject.GetComponent<SpriteRenderer> ();
+
+		//_earthLandingTextObj = GameObject.Find ("earthText");
+		_astLandingTextObj = GameObject.Find ("asteroidText");
+		_landingTextBg = GameObject.Find ("landingTextBG");
+		//_earthLandingTextObj.SetActive (false);
+		_astLandingTextObj.SetActive (false);
+		_landingTextBg.SetActive (false);
+
 	}
 	
 	// Update is called once per frame
@@ -89,27 +102,27 @@ public class Land : MonoBehaviour {
 		}
 	}
 
-	void OnGUI()
-	{
-		if (CanLand) {
-			string msg;
-			if (IsAsteroid(_landingObj)) {
-				msg = "PRESS Y TO LAND ON " + _landingObj.name + "\n(" + _landingObj.GetComponent<AsteroidValue>().Value + " RESOURCES)";
-			}
-			else {
-				msg = "PRESS Y TO LAND ON " + _landingObj.name;
-			}
-			GUI.Box (new Rect (new Vector2 (Screen.width / 2 - 100, Screen.height / 2 - 100), new Vector2 (200, 200)), msg);
-		} else if (Landed) {
-			string msg;
-			if (_landingObj == _Earth) {
-				msg = "PRESS Y TO BLAST OFF\nOR A TO BUY UPGRADE";
-			} else {
-				msg = "PRESS Y TO BLAST OFF";
-			}
-			GUI.Box (new Rect (new Vector2 (Screen.width / 2 - 100, Screen.height / 2 - 100), new Vector2 (200, 200)), msg);
-		}
-	}
+//	void OnGUI()
+//	{
+//		if (CanLand) {
+//			string msg;
+//			if (IsAsteroid(_landingObj)) {
+//				msg = "PRESS Y TO LAND ON " + _landingObj.name + "\n(" + _landingObj.GetComponent<AsteroidValue>().Value + " RESOURCES)";
+//			}
+//			else {
+//				msg = "PRESS Y TO LAND ON " + _landingObj.name;
+//			}
+//			GUI.Box (new Rect (new Vector2 (Screen.width / 2 - 100, Screen.height / 2 - 100), new Vector2 (200, 200)), msg);
+//		} else if (Landed) {
+//			string msg;
+//			if (_landingObj == _Earth) {
+//				msg = "PRESS Y TO BLAST OFF\nOR A TO BUY UPGRADE";
+//			} else {
+//				msg = "PRESS Y TO BLAST OFF";
+//			}
+//			GUI.Box (new Rect (new Vector2 (Screen.width / 2 - 100, Screen.height / 2 - 100), new Vector2 (200, 200)), msg);
+//		}
+//	}
 		
 	void OnTriggerEnter2D(Collider2D other) {
 
@@ -188,6 +201,7 @@ public class Land : MonoBehaviour {
 	void PrepareToLandOn(GameObject target) {
 		_landingStage = LandingStage.CanLand;
 		_landingObj = target;
+		ShowText ("Y to land on " + _landingObj.name);
 	}
 
 	void CancelLandingPreparations (GameObject _Earth)
@@ -214,10 +228,26 @@ public class Land : MonoBehaviour {
 		if (IsAsteroid (_landingObj)) {
 			// Extract resources from this asteroid and add them to inventory
 			this.GetComponent<Inventory> ().MineralXAmt += _landingObj.GetComponent<AsteroidValue> ().Extract ();
+			ShowText ("Y to blast off");
 		} else {
-			this.GetComponent<Inventory> ().MineralXAmt = 0;
+			Inventory i = this.GetComponent<Inventory>();
+			i.returnedAmt = i.MineralXAmt;
+			i.MineralXAmt = 0;
+			ShowText ("A to upgrade; Y to blast off");
 		}
 	}
+
+	void HideText() {
+		_astLandingTextObj.SetActive (false);
+		_landingTextBg.SetActive (false);
+	}
+	
+	void ShowText(string str) {
+		_astLandingTextObj.SetActive (true);
+		_astLandingTextObj.GetComponent<Text> ().text = str;
+		_landingTextBg.SetActive (true);
+	}
+
 
 	bool CanLandOnAsteroid(GameObject other) {
 		// Compare velocities
@@ -247,6 +277,7 @@ public class Land : MonoBehaviour {
 
 		
 		_landingObj = null;
+		HideText ();
 	}
 
 	void UpgradeMech ()
