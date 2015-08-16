@@ -25,6 +25,11 @@ public class Land : MonoBehaviour {
 	public Sprite LandingSprite;
 	public Sprite LandedSprite;
 
+	
+	public Sprite RegularSpriteUpg;
+	public Sprite LandingSpriteUpg;
+	public Sprite LandedSpriteUpg;
+
 	private float _landingStartTime;
 	public float MaxLandingTime;
 
