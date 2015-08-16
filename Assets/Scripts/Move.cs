@@ -93,7 +93,7 @@ public class Move : MonoBehaviour {
 		float pitchDelta = -Input.GetAxis ("Horizontal") * RotationSpeed;
 		transform.Rotate (0, 0, pitchDelta);
 
-		_particles.enableEmission = _emitForward || _emitBackward;
+		_particles.enableEmission = (_emitForward || _emitBackward) && !(_Land.Landing || _Land.Landed);
 		
 		if (_emitForward) {
 			_particles.transform.rotation = Quaternion.Euler (90, 0, 0);
