@@ -17,9 +17,13 @@ public class Land : MonoBehaviour {
 	private LandingStage _landingStage;
 	private GameObject _landingObj;
 
-
-	private float _landedWhenThisClose = 0.07f;
+	private SpriteRenderer _sr;
+	private float _landedWhenThisClose = 0.5f;
 	private Vector3 _vel;
+
+	public Sprite RegularSprite;
+	public Sprite LandingSprite;
+	public Sprite LandedSprite;
 
 	public bool Landing {
 		get {
@@ -44,6 +48,7 @@ public class Land : MonoBehaviour {
 	void Start () {
 		_Earth = GameObject.Find ("Earth");
 		_vel = new Vector3 (0, 0, 0);
+		_sr = this.gameObject.GetComponent<SpriteRenderer> ();
 	}
 	
 	// Update is called once per frame
@@ -123,6 +128,8 @@ public class Land : MonoBehaviour {
 	void InitiateLandingSequence ()
 	{
 		_landingStage = LandingStage.Landing;
+		_sr.sprite = LandingSprite;
+
 	}
 
 	/// <summary>
@@ -131,6 +138,8 @@ public class Land : MonoBehaviour {
 	void FinalizeLanding ()
 	{
 		_landingStage = LandingStage.Landed;
+		_sr.sprite = LandedSprite;
+
 		if (IsAsteroid (_landingObj)) {
 			// Extract resources from this asteroid and add them to inventory
 			this.GetComponent<Inventory> ().MineralXAmt += _landingObj.GetComponent<AsteroidValue> ().Extract();
@@ -150,6 +159,7 @@ public class Land : MonoBehaviour {
 
 	void BlastOff() {
 		_landingStage = LandingStage.CantLand;
+		_sr.sprite = RegularSprite;
 
 		float radius = 0.0f;
 		if (_landingObj == _Earth)
