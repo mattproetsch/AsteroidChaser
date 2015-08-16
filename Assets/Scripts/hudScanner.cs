@@ -47,6 +47,11 @@ public class hudScanner : MonoBehaviour {
 		//Iterate nearby objects
 		for(int i=0;i<_scanner._scannedObjects.Count;i++) {
 			GameObject body = _scanner._scannedObjects[i];
+
+			//TODO
+			//FINDME
+			//FIXME
+			// I think this should be "continue;" not "break;"
 			if (body.name == "Earth"){break;}
 			renderBlip(body,i);
 		}

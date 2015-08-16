@@ -14,6 +14,9 @@ public class Move : MonoBehaviour {
 
 	private Land _Land;
 
+	bool _emitForward;
+	bool _emitBackward;
+
 	public Vector2 Velocity {
 		get {
 			return _vel;
@@ -33,12 +36,14 @@ public class Move : MonoBehaviour {
 		if (!_Land.Landing && !_Land.Landed) {
 			transform.position += new Vector3 (_vel.x, _vel.y);
 		}
+
+		PositionUpdate ();
 	}
 
 	// Update position based on inputs
 	void FixedUpdate() {
 		if (!_Land.Landing && !_Land.Landed) {
-			PositionUpdate ();
+			VelocityUpdate ();
 		} else {
 			_vel = Vector2.zero;
 		}
@@ -59,22 +64,20 @@ public class Move : MonoBehaviour {
 		}
 	}
 
-	void PositionUpdate ()
+	void VelocityUpdate ()
 	{
-		bool emit = false;
-		bool emitBackwards = false;
+		_emitForward = false;
+		_emitBackward = false;
 
 		float thrust = 0.0f;
 		if (Input.GetButton ("Fire1")) {
 			thrust = 0.1f * Time.fixedDeltaTime * SpeedScale;
-			emit = true;
+			_emitForward = true;
 		}
 		if (Input.GetButton ("Fire2")) {
 			thrust -= 0.1f * Time.fixedDeltaTime * SpeedScale;
-			emitBackwards = true;
+			_emitBackward = true;
 		}
-		float pitchDelta = -Input.GetAxis ("Horizontal") * RotationSpeed;
-		transform.Rotate (0, 0, pitchDelta);
 		// See if adding thrust in this direction results in a speed above MaxSpeed
 		// If not, apply thrust
 		Vector2 accel = transform.TransformDirection (Vector3.up) * thrust;
@@ -82,14 +85,20 @@ public class Move : MonoBehaviour {
 		if (newVel.magnitude <= MaxSpeed) {
 			_vel = newVel;
 		} 
+	}
 
-		_particles.enableEmission = emit || emitBackwards;
+	void PositionUpdate() {
+		
+		
+		float pitchDelta = -Input.GetAxis ("Horizontal") * RotationSpeed;
+		transform.Rotate (0, 0, pitchDelta);
 
-		if (emit) {
+		_particles.enableEmission = _emitForward || _emitBackward;
+		
+		if (_emitForward) {
 			_particles.transform.rotation = Quaternion.Euler (90, 0, 0);
-		} else if (emitBackwards) {
+		} else if (_emitBackward) {
 			_particles.transform.rotation = Quaternion.Euler (270, 0, 0);
 		}
-
 	}
 }
