@@ -18,12 +18,15 @@ public class Land : MonoBehaviour {
 	private GameObject _landingObj;
 
 	private SpriteRenderer _sr;
-	private float _landedWhenThisClose = 0.5f;
+	private float _landedWhenThisClose = 2.5f;
 	private Vector3 _vel;
 
 	public Sprite RegularSprite;
 	public Sprite LandingSprite;
 	public Sprite LandedSprite;
+
+	private float _landingStartTime;
+	public float MaxLandingTime;
 
 	public bool Landing {
 		get {
@@ -53,9 +56,19 @@ public class Land : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		
+		if (Landed) {
+			transform.position = _landingObj.transform.position;
+		}
+		
+		if (Landed && Input.GetButtonDown ("Jump")) {
+			BlastOff ();
+		}
+
 		if (Landing) {
 			transform.position = Vector3.SmoothDamp (transform.position, _landingObj.transform.position, ref _vel, LandingSpeed);
-			if (Vector3.Distance(transform.position, _landingObj.transform.position) <= _landedWhenThisClose)
+			if (Vector3.Distance(transform.position, _landingObj.transform.position) <= _landedWhenThisClose
+			    || Time.time - _landingStartTime >= MaxLandingTime)
 			{
 				FinalizeLanding();
 			}
@@ -63,16 +76,6 @@ public class Land : MonoBehaviour {
 
 		if (CanLand && Input.GetButtonDown ("Jump")) {
 			InitiateLandingSequence ();
-		}
-
-		if (Landed && Input.GetButtonDown ("Jump")) {
-			BlastOff ();
-		}
-
-		if (Landed) {
-			transform.position = _landingObj.transform.position;
-
-			
 		}
 	}
 
@@ -92,25 +95,57 @@ public class Land : MonoBehaviour {
 		}
 	}
 		
-	void OnTriggerEnter2D(Collider2D other)
-	{
+	void OnTriggerEnter2D(Collider2D other) {
+
 		if (other.gameObject == _Earth) {
+
 			PrepareToLandOn(_Earth);
+
 		} else if (other.gameObject.name.Contains ("AsteroidLandingZone")) {
+
 			Debug.Log ("Entered asteroid landing zone");
 			// Test velocity to see if we can land
-			if (CanLandOnAsteroid(other.gameObject.transform.parent.gameObject)) {
+			if (_landingObj == null && CanLandOnAsteroid(other.gameObject.transform.parent.gameObject)) {
+
 				PrepareToLandOn(other.gameObject.transform.parent.gameObject);
+
+			} else {
+
+				Debug.Log ("MATCH ITS SPEED");
+
+			}
+		}
+	}
+
+	void OnTriggerStay2D(Collider2D other) {
+
+		if (IsAsteroidLandingZone (other.gameObject)) {
+
+			if (_landingObj == null && !CanLandOnAsteroid (other.gameObject.transform.parent.gameObject)) {
+
+				Debug.Log ("MATCH ITS SPEED");
+
+			} else if (_landingObj == null && CanLandOnAsteroid (other.gameObject.transform.parent.gameObject)) {
+
+				PrepareToLandOn (other.gameObject.transform.parent.gameObject);
+
 			}
 		}
 	}
 
 	void OnTriggerExit2D(Collider2D other)
 	{
-		if (other.gameObject == _Earth) {
+		if (other.gameObject == _Earth && other.gameObject == _landingObj) {
+
 			CancelLandingPreparations (_Earth);
-		} else if (other.gameObject.name.Contains ("AsteroidLandingZone")) {
-			CancelLandingPreparations (other.gameObject.transform.parent.gameObject);
+
+		} else if (IsAsteroidLandingZone(other.gameObject)) {
+
+			if (other.gameObject.transform.parent.gameObject == _landingObj) {
+
+				CancelLandingPreparations (other.gameObject.transform.parent.gameObject);
+
+			}
 		}
 	}
 
@@ -129,7 +164,7 @@ public class Land : MonoBehaviour {
 	{
 		_landingStage = LandingStage.Landing;
 		_sr.sprite = LandingSprite;
-
+		_landingStartTime = Time.time;
 	}
 
 	/// <summary>
@@ -165,17 +200,24 @@ public class Land : MonoBehaviour {
 		if (_landingObj == _Earth)
 			radius = 10.0f;
 		else if (IsAsteroid(_landingObj)) {
-			radius = 3.0f;
+			radius = 13.0f;
 		}
 
 		Vector2 random = (new Vector2 (Random.Range (-1.0f, 1.0f), Random.Range (-1.0f, 1.0f))).normalized;
 		Vector3 delta = radius * random;
 		transform.position = transform.position + delta;
+
+		
+		_landingObj = null;
 	}
 
 	bool IsAsteroid (GameObject _landingObj)
 	{
 		return _landingObj.name.Contains ("Asteroid");
+	}
+
+	bool IsAsteroidLandingZone(GameObject other) {
+		return other.name.Contains("AsteroidLandingZone");
 	}
 
 }

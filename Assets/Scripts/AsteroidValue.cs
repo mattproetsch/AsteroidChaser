@@ -13,7 +13,7 @@ public class AsteroidValue : MonoBehaviour {
 
 	public void Start () {
 		_mvt = gameObject.GetComponent<AsteroidMovement> ();
-		_Value = (int)(_mvt.Speed * 50.0f);
+		_Value = (int)(_mvt.Speed * 450.0f);
 	}
 
 	public int Extract() {

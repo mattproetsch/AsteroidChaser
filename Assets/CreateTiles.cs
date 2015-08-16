@@ -62,25 +62,25 @@ public class CreateTiles : MonoBehaviour {
 
 		if (shipPos.x < _tilesCenter.x - _viewportSize.x) {
 			// Reposition sprites to the right of shipPos.x + _viewportWidth/2
-			Debug.Log ("     Because ship moved left");
+			//Debug.Log ("     Because ship moved left");
 			List<GameObject> repositionUs = _sprites.FindAll(sprite => sprite.transform.position.x > shipPos.x + _viewportSize.x);
-			Debug.Log (repositionUs.Count + " sprites to be moved");
+			//Debug.Log (repositionUs.Count + " sprites to be moved");
 			float xMin = shipPos.x - 1.5f * _viewportSize.x;
 			float xMax = shipPos.x - 0.5f * _viewportSize.x;
-			Debug.Log ("Reposition sprites with x in [" + xMin + ", " + xMax + "]");
+			//Debug.Log ("Reposition sprites with x in [" + xMin + ", " + xMax + "]");
 			foreach (GameObject go in repositionUs) {
 				go.transform.position = new Vector3(Random.Range (xMin, xMax), go.transform.position.y, Random.Range(10, 20));
 			}
 			_tilesCenter.x = shipPos.x;
 		}
 		else if (shipPos.x > _tilesCenter.x + _viewportSize.x) {
-			Debug.Log ("     Because ship moved right");
+			//Debug.Log ("     Because ship moved right");
 			// Reposition sprites to the left of shipPos.x - _viewportWidth/2
 			List<GameObject> repositionUs = _sprites.FindAll(sprite => sprite.transform.position.x < shipPos.x - _viewportSize.x);
-			Debug.Log (repositionUs.Count + " sprites to be moved");
+			//Debug.Log (repositionUs.Count + " sprites to be moved");
 			float xMin = shipPos.x + 0.5f * _viewportSize.x;
 			float xMax = shipPos.x + 1.5f * _viewportSize.x;
-			Debug.Log ("Reposition sprites with x in [" + xMin + ", " + xMax + "]");
+			//Debug.Log ("Reposition sprites with x in [" + xMin + ", " + xMax + "]");
 			foreach (GameObject go in repositionUs) {
 				go.transform.position = new Vector3(Random.Range (xMin, xMax), go.transform.position.y, Random.Range (10, 20));
 			}
@@ -88,26 +88,26 @@ public class CreateTiles : MonoBehaviour {
 		}
 
 		if (shipPos.y > _tilesCenter.y + _viewportSize.y) {
-			Debug.Log ("     Because ship moved up");
+			//Debug.Log ("     Because ship moved up");
 			// REposition sprites below _shipPos.y - _viewportWidth/2
 			List<GameObject> repositionUs = _sprites.FindAll(sprite => sprite.transform.position.y < shipPos.y - _viewportSize.y);
-			Debug.Log (repositionUs.Count + " sprites to be moved");
+			//Debug.Log (repositionUs.Count + " sprites to be moved");
 			float yMin = shipPos.y + 0.5f * _viewportSize.y;
 			float yMax = shipPos.y + 1.5f * _viewportSize.y;
-			Debug.Log ("Reposition sprites with y in [" + yMin + ", " + yMax + "]");
+			//Debug.Log ("Reposition sprites with y in [" + yMin + ", " + yMax + "]");
 			foreach (GameObject go in repositionUs) {
 				go.transform.position = new Vector3(go.transform.position.x, Random.Range (yMin, yMax), Random.Range (10, 20));
 			}
 			_tilesCenter.y = shipPos.y;
 		}
 		else if (shipPos.y < _tilesCenter.y - _viewportSize.y) {
-			Debug.Log ("     Because ship moved down");
+			//Debug.Log ("     Because ship moved down");
 			// REposition sprites above _shipPos.y + _iweportWidth/2
 			List<GameObject> repositionUs = _sprites.FindAll(sprite => sprite.transform.position.y > shipPos.y + _viewportSize.y);
-			Debug.Log (repositionUs.Count + " sprites to be moved");
+			//Debug.Log (repositionUs.Count + " sprites to be moved");
 			float yMin = shipPos.y - 1.5f * _viewportSize.y;
 			float yMax = shipPos.y - 0.5f * _viewportSize.y;
-			Debug.Log ("Reposition sprites with y in [" + yMin + ", " + yMax + "]");
+			//Debug.Log ("Reposition sprites with y in [" + yMin + ", " + yMax + "]");
 			foreach (GameObject go in repositionUs) {
 				go.transform.position = new Vector3(go.transform.position.x, Random.Range (yMin, yMax), Random.Range (10, 20));
 			}

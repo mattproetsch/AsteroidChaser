@@ -31,9 +31,9 @@ public class AsteroidMovement : MonoBehaviour {
 		
 		if (IsRandom) {
 			AxisRotationDegrees = Random.Range (0.0f, 180.0f);
-			XRadius = Random.Range(1.0f, 4.0f);
-			YRadius = Random.Range(1.0f, 4.0f);
-			Speed = Random.Range(0.5f, 2.5f);
+			XRadius = Random.Range(10.0f, 100.0f);
+			YRadius = Random.Range(10.0f, 100.0f);
+			Speed = Random.Range(0.1f, 0.01f);
 		}
 
 		_axRotRad = Mathf.Deg2Rad * AxisRotationDegrees;
