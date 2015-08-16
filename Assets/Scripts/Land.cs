@@ -99,6 +99,23 @@ public class Land : MonoBehaviour {
 
 		if (other.gameObject == _Earth) {
 
+			if (_landingStage != LandingStage.CantLand) {
+
+				switch (_landingStage) {
+
+				case LandingStage.CanLand:
+					CancelLandingPreparations(_landingObj);
+					break;
+				case LandingStage.Landing:
+					FinalizeLanding();
+					BlastOff();
+					break;
+				case LandingStage.Landed:
+					BlastOff();
+					break;
+				}
+			}
+
 			PrepareToLandOn(_Earth);
 
 		} else if (other.gameObject.name.Contains ("AsteroidLandingZone")) {
