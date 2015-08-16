@@ -3,15 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-public class scannerDisplay : MonoBehaviour {
+public class shipScanner : MonoBehaviour {
 	private GameObject _ship;
-	public List<GameObject> _scannedObjects; 
+	public List<GameObject> _scannedObjects;
+	private List<GameObject> _blips;
 
+	public GameObject BlipPrefab;
 
 	// Use this for initialization
 	void Start () {
 		_ship = GameObject.Find ("Ship");
 		_scannedObjects = new List<GameObject> ();
+
+		//Creates pool of blips for rendering
+		for (int i=0; i<=15; i++) {
+			Debug.Log(i);
+		}
+
 	}
 
 	void OnTriggerEnter2D(Collider2D other)
@@ -27,9 +35,10 @@ public class scannerDisplay : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		Debug.Log (_scannedObjects.Count);
 		foreach (GameObject scanned in _scannedObjects) {
-			float distance = Vector3.Distance(scanned.transform.position,_ship.transform.position);
+			float dist = Vector3.Distance(scanned.transform.position,_ship.transform.position);
+			dist /= 200;
+
 		}
 
 
