@@ -66,6 +66,8 @@ public class Land : MonoBehaviour {
 
 		if (Landed) {
 			transform.position = _landingObj.transform.position;
+
+			
 		}
 	}
 
