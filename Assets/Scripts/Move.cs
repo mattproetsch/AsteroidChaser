@@ -11,6 +11,7 @@ public class Move : MonoBehaviour {
 	public float RotationSpeed;
 
 	public float CollisionTolerance;
+	public AudioSource shipAudio;
 
 	private Land _Land;
 
