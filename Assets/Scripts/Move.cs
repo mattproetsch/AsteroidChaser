@@ -30,14 +30,14 @@ public class Move : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//Debug.Log ("Speed: " + _vel.magnitude.ToString());
-		if (!_Land.LandingSprite && !_Land.LandedSprite) {
+		if (!_Land.Landing && !_Land.Landed) {
 			transform.position += new Vector3 (_vel.x, _vel.y);
 		}
 	}
 
 	// Update position based on inputs
 	void FixedUpdate() {
-		if (!_Land.LandingSprite && !_Land.LandedSprite) {
+		if (!_Land.Landing && !_Land.Landed) {
 			PositionUpdate ();
 		} else {
 			_vel = Vector2.zero;
