@@ -64,6 +64,11 @@ public class Land : MonoBehaviour {
 		
 		if (Landed) {
 			transform.position = _landingObj.transform.position;
+			if (_landingObj == _Earth) {
+				if (Input.GetButtonDown("Fire3") || Input.GetKey (KeyCode.B)) {
+					UpgradeMech();
+				}
+			}
 		}
 		
 		if (Landed && Input.GetButtonDown ("Jump")) {
@@ -96,7 +101,13 @@ public class Land : MonoBehaviour {
 			}
 			GUI.Box (new Rect (new Vector2 (Screen.width / 2 - 100, Screen.height / 2 - 100), new Vector2 (200, 200)), msg);
 		} else if (Landed) {
-			GUI.Box (new Rect (new Vector2 (Screen.width / 2 - 100, Screen.height / 2 - 100), new Vector2 (200, 200)), "PRESS Y TO BLAST OFF");
+			string msg;
+			if (_landingObj == _Earth) {
+				msg = "PRESS Y TO BLAST OFF\nOR B TO BUY UPGRADE";
+			} else {
+				msg = "PRESS Y TO BLAST OFF";
+			}
+			GUI.Box (new Rect (new Vector2 (Screen.width / 2 - 100, Screen.height / 2 - 100), new Vector2 (200, 200)), msg);
 		}
 	}
 		
@@ -231,6 +242,18 @@ public class Land : MonoBehaviour {
 
 		
 		_landingObj = null;
+	}
+
+	void UpgradeMech ()
+	{
+		RegularSprite = RegularSpriteUpg;
+		LandingSprite = LandingSpriteUpg;
+		LandedSprite = LandedSpriteUpg;
+		_sr.sprite = LandedSprite;
+
+		GameObject.Find ("Ship").GetComponentInChildren<ParticleSystem> ().startSize = 4.00f;
+		GameObject.Find ("Ship").GetComponentInChildren<ParticleSystem> ().emissionRate = 500.0f;
+
 	}
 
 	bool IsAsteroid (GameObject _landingObj)
