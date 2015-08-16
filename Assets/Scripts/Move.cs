@@ -29,6 +29,7 @@ public class Move : MonoBehaviour {
 		_vel = new Vector2 (0.0f, 0.0f);
 		_Land = this.gameObject.GetComponent<Land> ();
 		_particles = this.gameObject.GetComponentInChildren<ParticleSystem> ();
+		
 	}
 	
 	// Update is called once per frame
@@ -95,6 +96,20 @@ public class Move : MonoBehaviour {
 		transform.Rotate (0, 0, pitchDelta);
 
 		_particles.enableEmission = (_emitForward || _emitBackward) && !(_Land.Landing || _Land.Landed);
+
+		if (_particles.enableEmission && shipAudio.pitch<3) {
+			shipAudio.pitch += 0.01f;
+		} else if (!_particles.enableEmission) {
+			shipAudio.pitch = 1;
+		}
+		if (_particles.enableEmission && !shipAudio.isPlaying) {
+			shipAudio.Play ();
+		} else if (!_particles.enableEmission && shipAudio.isPlaying) {
+			shipAudio.Pause ();
+
+		}
+
+
 		
 		if (_emitForward) {
 			_particles.transform.rotation = Quaternion.Euler (90, 0, 0);
