@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class hudScanner : MonoBehaviour {
 	private GameObject _ship;
@@ -7,6 +8,8 @@ public class hudScanner : MonoBehaviour {
 	public GameObject BlipPrefab;
 	private GameObject _guiCanvas;
 	private GameObject _earth;
+	public GameObject miniEarthBlip;
+
 	
 	// Use this for initialization
 	void Start () {
@@ -15,14 +18,17 @@ public class hudScanner : MonoBehaviour {
 		_scanner = _ship.GetComponent<shipScanner> ();
 		_guiCanvas = GameObject.Find ("Canvas");
 		_earth = GameObject.Find ("Earth");
+		
 
 		//Creates pool of blips for rendering
 		for (int i=0; i<15; i++) {
 			_scanner._blips.Add( (GameObject.Instantiate(BlipPrefab)) as GameObject );
 			_scanner._blips[i].transform.parent = _guiCanvas.transform;
 		}
+		
+		_scanner._blips [14] = miniEarthBlip; 
 
-		// _scanner._blips[14] = Earth icon
+	
 	}
 	
 	//Renders GameObject to display with blip at index i
@@ -50,9 +56,7 @@ public class hudScanner : MonoBehaviour {
 
 			//TODO
 			//FINDME
-			//FIXME
-			// I think this should be "continue;" not "break;"
-			if (body.name == "Earth"){break;}
+			if (body.name == "Earth"){continue;}
 			renderBlip(body,i);
 		}
 		//Always render earth
