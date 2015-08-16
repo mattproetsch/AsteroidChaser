@@ -153,13 +153,13 @@ public class Land : MonoBehaviour {
 
 		float radius = 0.0f;
 		if (_landingObj == _Earth)
-			radius = 5.0f;
+			radius = 10.0f;
 		else if (IsAsteroid(_landingObj)) {
 			radius = 3.0f;
 		}
 
-
-		Vector3 delta = radius * Random.onUnitSphere;
+		Vector2 random = (new Vector2 (Random.Range (-1.0f, 1.0f), Random.Range (-1.0f, 1.0f))).normalized;
+		Vector3 delta = radius * random;
 		transform.position = transform.position + delta;
 	}
 

@@ -4,6 +4,7 @@ using System.Collections;
 public class Move : MonoBehaviour {
 
 	private Vector2 _vel;
+	private ParticleSystem _particles;
 
 	public float SpeedScale;
 	public float MaxSpeed;
@@ -23,6 +24,7 @@ public class Move : MonoBehaviour {
 	void Start () {
 		_vel = new Vector2 (0.0f, 0.0f);
 		_Land = this.gameObject.GetComponent<Land> ();
+		_particles = this.gameObject.GetComponentInChildren<ParticleSystem> ();
 	}
 	
 	// Update is called once per frame
@@ -59,12 +61,17 @@ public class Move : MonoBehaviour {
 
 	void PositionUpdate ()
 	{
+		bool emit = false;
+		bool emitBackwards = false;
+
 		float thrust = 0.0f;
 		if (Input.GetButton ("Fire1")) {
 			thrust = 0.1f * Time.fixedDeltaTime * SpeedScale;
+			emit = true;
 		}
 		if (Input.GetButton ("Fire2")) {
 			thrust -= 0.1f * Time.fixedDeltaTime * SpeedScale;
+			emitBackwards = true;
 		}
 		float pitchDelta = -Input.GetAxis ("Horizontal") * RotationSpeed;
 		transform.Rotate (0, 0, pitchDelta);
@@ -74,6 +81,15 @@ public class Move : MonoBehaviour {
 		Vector2 newVel = _vel + accel;
 		if (newVel.magnitude <= MaxSpeed) {
 			_vel = newVel;
+		} 
+
+		_particles.enableEmission = emit || emitBackwards;
+
+		if (emit) {
+			_particles.transform.rotation = Quaternion.Euler (90, 0, 0);
+		} else if (emitBackwards) {
+			_particles.transform.rotation = Quaternion.Euler (270, 0, 0);
 		}
+
 	}
 }
