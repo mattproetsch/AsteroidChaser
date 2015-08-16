@@ -17,7 +17,7 @@ public class shipScanner : MonoBehaviour {
 
 		//Creates pool of blips for rendering
 		for (int i=0; i<=15; i++) {
-			Debug.Log(i);
+			_scannedObjects[i] = GameObject.Instantiate(BlipPrefab) as GameObject;
 		}
 
 	}
@@ -38,6 +38,7 @@ public class shipScanner : MonoBehaviour {
 		foreach (GameObject scanned in _scannedObjects) {
 			float dist = Vector3.Distance(scanned.transform.position,_ship.transform.position);
 			dist /= 200;
+
 
 		}
 
