@@ -4,7 +4,7 @@ using System.Collections;
 public class fuelBar : MonoBehaviour {
 
 	private RectTransform _rXform;
-	private float _barScale;
+	private float _barScale; //min: 0.75, max: 4.0
 
 	// Use this for initialization
 	void Start () {
@@ -15,6 +15,7 @@ public class fuelBar : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//_barScale = ; //Get ship fuel level
+
 		_rXform.localScale = new Vector3 (_barScale, _rXform.localScale.y);
 	}
 }
