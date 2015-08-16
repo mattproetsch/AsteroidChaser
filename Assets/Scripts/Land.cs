@@ -65,7 +65,7 @@ public class Land : MonoBehaviour {
 		if (Landed) {
 			transform.position = _landingObj.transform.position;
 			if (_landingObj == _Earth) {
-				if (Input.GetButtonDown("Fire3") || Input.GetKey (KeyCode.B)) {
+				if (Input.GetButtonDown("Fire1") || Input.GetKey (KeyCode.B)) {
 					UpgradeMech();
 				}
 			}
@@ -103,7 +103,7 @@ public class Land : MonoBehaviour {
 		} else if (Landed) {
 			string msg;
 			if (_landingObj == _Earth) {
-				msg = "PRESS Y TO BLAST OFF\nOR B TO BUY UPGRADE";
+				msg = "PRESS Y TO BLAST OFF\nOR A TO BUY UPGRADE";
 			} else {
 				msg = "PRESS Y TO BLAST OFF";
 			}
@@ -210,7 +210,9 @@ public class Land : MonoBehaviour {
 
 		if (IsAsteroid (_landingObj)) {
 			// Extract resources from this asteroid and add them to inventory
-			this.GetComponent<Inventory> ().MineralXAmt += _landingObj.GetComponent<AsteroidValue> ().Extract();
+			this.GetComponent<Inventory> ().MineralXAmt += _landingObj.GetComponent<AsteroidValue> ().Extract ();
+		} else {
+			this.GetComponent<Inventory> ().MineralXAmt = 0;
 		}
 	}
 
@@ -253,7 +255,8 @@ public class Land : MonoBehaviour {
 
 		GameObject.Find ("Ship").GetComponentInChildren<ParticleSystem> ().startSize = 4.00f;
 		GameObject.Find ("Ship").GetComponentInChildren<ParticleSystem> ().emissionRate = 500.0f;
-
+		GameObject.Find ("Ship").GetComponent<Move> ().SpeedScale = 3.0f;
+		GameObject.Find ("Ship").GetComponent<Move> ().MaxSpeed = 0.4f;
 	}
 
 	bool IsAsteroid (GameObject _landingObj)
