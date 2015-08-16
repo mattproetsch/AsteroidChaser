@@ -9,9 +9,11 @@ public class resourceText : MonoBehaviour {
 	private Inventory inventory;
 	private GameObject ship;
 	public Text text;
-	private float dispAmount;
+	private float collectedAmount;
 	private int collected;
-	private float deltaAmount;
+
+	private float returnedAmount;
+	private int returned;
 
 	// Use this for initialization
 	void Start () {
@@ -24,7 +26,11 @@ public class resourceText : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		collected = inventory.MineralXAmt;
-		dispAmount += (collected-dispAmount)*0.05f;
-		text.text = "Resources: "+Mathf.Ceil (dispAmount).ToString();
+		collectedAmount += (collected-collectedAmount)*0.05f;
+
+		returned = inventory.returnedAmt;
+		returnedAmount += (returned-returnedAmount)*0.05f;
+
+		text.text = "Resources: "+Mathf.Ceil (collectedAmount).ToString()+"\nReturned: "+Mathf.Ceil (returnedAmount).ToString();
 	}
 }
