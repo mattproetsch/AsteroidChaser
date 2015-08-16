@@ -168,6 +168,9 @@ public class Land : MonoBehaviour {
 
 	void OnTriggerExit2D(Collider2D other)
 	{
+		if (Landing)
+			return;
+
 		if (other.gameObject == _Earth && other.gameObject == _landingObj) {
 
 			CancelLandingPreparations (_Earth);
