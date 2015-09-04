@@ -17,7 +17,7 @@ public class WelcomeScreen : MonoBehaviour {
 		}
 		if (curstep == 2) {
 			Debug.Log(counter);
-			GameObject.Find ("ScrollText").GetComponent<RectTransform>().position=new Vector3(GameObject.Find ("ScrollText").GetComponent<RectTransform>().position.x,GameObject.Find ("ScrollText").GetComponent<RectTransform>().position.y+1,GameObject.Find ("ScrollText").GetComponent<RectTransform>().position.z);
+			
 			counter++;
 			Debug.Log(counter);
 			if(counter>100000000000000000){curstep=3;}
